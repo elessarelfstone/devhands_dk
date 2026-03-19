@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    build: ./postgres
+    build: postgres
     environment:
       POSTGRES_USER: wikiuser
       POSTGRES_PASSWORD: wikipass
@@ -21,7 +21,7 @@ services:
       start_period: 10s
 
   redis:
-    build: ./redis
+    build: redis
     volumes:
       - redisdata:/data
     networks:
@@ -36,7 +36,7 @@ services:
       start_period: 10s
 
   go-http:
-    build: ./go-http
+    build: go-http
     environment:
       POSTGRES_DSN: "host=postgres user=wikiuser password=wikipass dbname=wikidb sslmode=disable"
       REDIS_ADDR: "redis:6379"
@@ -57,7 +57,7 @@ services:
       replicas: 3
 
   python-http:
-    build: ./python-http
+    build: python-http
     environment:
       GO_SERVICE: "http://go-http:8080"
     depends_on:
@@ -72,7 +72,7 @@ services:
       retries: 3
 
   nginx:
-    build: ./nginx
+    build: nginx
     ports:
       - "8080:80"
     depends_on:
